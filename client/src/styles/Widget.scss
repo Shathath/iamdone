@@ -1,0 +1,14 @@
+.outer-wrapper {
+  margin: 1em;
+  float: right;
+  width: 10%;
+  .inner-button {
+    padding: 6%;
+    padding-left: 7.5%;
+    padding-right: 7.5%;
+    border: none;
+    background-color: #5978ce;
+    color: #fff;
+    border-radius: 4%;
+  }
+}

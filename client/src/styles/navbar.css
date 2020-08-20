@@ -1,0 +1,13 @@
+.btn-outline-primary {
+  border: 2px solid black !important;
+  color: black !important;
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+.btn-outline-primary:hover {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+/*# sourceMappingURL=navbar.css.map */

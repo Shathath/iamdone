@@ -1,0 +1,488 @@
+<UI layout='objectempty'>
+    <Section id='main'>
+    <!-- <ScriptSource src='#{resourceurl}/#{app}/jquery.gridster.min.js' /> -->
+    <ScriptSource src='#{resourceurl}/#{app}/gridster.js' />
+
+    <StyleSheet src='#{resourceurl}/#{app}/slick.css' />
+    <ScriptSource src='#{resourceurl}/#{app}/slick.min.js' />
+
+    <StyleSheet src='#{resourceurl}/#{app}/jquery.gridster.css?t=1' />
+    <StyleSheet src='#{resourceurl}/#{app}/uxp/uxp.css?t=#{now}' />
+    <StyleSheet src='#{resourceurl}/#{app}/uxp/custom.css?t=#{now}' />
+    <StyleSheet src='#{resourceurl}/#{app}/uxp/chatbox.css?t=#{now}' />
+    <Service id='links' service='UseCaseManager.UseCaseLink:LinksForUser' />
+    <Service id='latest' service='UXP.UserData:LatestItems' serialize='true' />
+    <Service id='countcomplaints' service='FxelleShopper.CustomerComplaint:CountComplaints' serialize='true' />
+    <Service id='counttenantcomplaints' service='FxelleShopper.CustomerComplaint:CountTenantComplaints' serialize='true' >
+        <UserKey>#{auth.UserKey}</UserKey>
+    </Service>
+    <Service id='getpending' service='FxelleShopper.CustomerComplaint:GetPendingComplaints' serialize='true'/>
+    <Service id='getpendingfortenants' service='FxelleShopper.CustomerComplaint:GetTenantPendingComplaints' serialize='true'>
+        <UserKey>#{auth.UserKey}</UserKey>
+    </Service>
+    <Service id='getresolved' service='FxelleShopper.CustomerComplaint:GetResolvedComplaints' serialize='true'/>
+    <Service id='getunresolved' service='FxelleShopper.CustomerComplaint:GetUnresolvedComplaints' serialize='true'/>
+    <Service id='dashboard' service='UXP.UserData:DashboardData' serialize='true'>
+        <UserKey>#{auth.UserKey}</UserKey>
+    </Service>
+     <Service id='dbconfig' service='UXP.UserData:Dashboard' serialize='true'>
+        <UserKey>#{auth.UserKey}</UserKey>
+    </Service>
+
+    <ScriptSource src='#{resourceurl}/#{app}/uxp/uxp.js?t=v1' />
+    <ScriptSource src='#{resourceurl}/#{app}/uxp/notifications/dist/notifications.js?t=#{now}' />
+    <Field type='hidden' id='accountType' value='#{if account.settings.IsLandlord? then [landlord] else [tenant]}' />
+    <Field type='hidden' id='model' value='#{if account.settings.IsLandlord? then [Landlord] else [UXP]}' />
+
+    <!-- <Service id='notifications' service='LucyMobile.GetLatestNotifications' serialize='true'>
+        <max>10</max>
+    </Service> -->
+    <Script>
+    <![CDATA[
+    $(()=>{
+        $('html').addClass('uxp-html');
+        var accountType = $SDV('accountType');
+        var model = $SDV('model');
+        UXPNotifications.setupNotifications(model,__token__,__ServiceData__.notifications,accountType);
+    });
+   
+    ]]>
+    </Script>
+        <Field type='html'>
+        <![CDATA[
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <div class='uxp-body service-req-portal'>
+            <div class='uxp-header'>
+                <div class='title'><span class="service-request svg-icon"></span>Concierge Services</div>
+                <div class='msg1'></div>
+                <div class='tray'>
+                <a href='#{appurl}/Marketplace/home' class='marketplace #{if authrole.Marketplace.canopenapp? then [] else [invisible]}'></a>
+                    <span class='inbox' onclick='UXPNotifications.showNotifications();return false;'></span>
+                    <span class='#{if !auth.LoginID? then [invisible]} userlabel subtxt' title='#{auth.FullName}'>
+                            <a href='#' onclick='ServiceDesk.showPopupMenu(this,"_userprofilemenu_");return false;' 
+                            style='float:left;margin-top:7px;#{profileimagetbstyle}' 
+                            class='icon-tb-profile'
+                            ></a>
+                            
+                        </span>
+                    <span class='welcomemsg'>#{:sys.header-welcome} #{html(auth.FirstName)}</span>
+                    <span class='menu' onclick='showMenu();return false;'></span>
+                </div>
+            </div>
+            
+            <div class='uxp-sidebar'>
+                <div class='logo'></div>
+                <div class='links'>
+                ${for link in services.links}
+                    <div class='item'>
+                        <div class='icon' style='background-image: url(#{link.IconUrl});'></div>
+                        <a class='text' ${if link.Url?}href='#{link.Url}'${end} ${if link.App?}href='#{appurl}/#{link.App}/#{link.View}'${else}href='#{appurl}/System/sandbox-#{link.View}'${end}
+                        ${if link.LinkType==[dialog]}
+                        onclick='loadUXPDialog(this);return false;'
+                        app='#{link.App}'
+                        view='#{link.View}'
+                        ${end}
+                          >#{link.Title}</a>
+                    </div>
+                ${end}
+                 <ul class="nav sidebar-menu">
+                    <!--<li class="">
+                    <a href="dashboard-view">
+                    <span class="dashboard svg-icon"></span>
+                    <span class="sidebar-title">Tenant Portal</span>
+                    </a>
+                    </li> -->
+                    <li class="active">
+                    <a href="portal">
+                    <span class="service-request svg-icon"></span>
+                    <span class="sidebar-title">FeedBack</span>
+                    </a>
+                    </li>
+                    
+                     
+                </ul>
+
+                </div>
+            </div>
+
+            <div class='uxp-top-bar'>
+                <div class="topbar-left">
+                    <ol class="breadcrumb">
+                    
+                    <li class="crumb-icon">
+                    <a href="dashboard">
+                    <span class="glyphicon glyphicon-home"></span>
+                    </a>
+                    </li>
+                    <li class="crumb-link">
+                    <a href="dashboard">Home / </a>
+                    </li>
+                    <li class="crumb-trail">Dashboard</li>
+                    </ol>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="bg-primary text-center anim-all"><a href="#">+ New Work Request</a></div>
+                    <div class="menu-dropdown">
+                        <div class="wr-create-btn express-wr text-center anim-all large svg-icon"><a href="services">Express Work Request</a></div>
+                        <div class="wr-create-btn location-based-wr text-center anim-all large btn-alert svg-icon"><a href="select-location">Continue with Location</a></div>
+                        <div class="wr-create-btn asset-based-wr text-center anim-all large system svg-icon"><a href="select-asset">Continue with Asset</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class='uxp-content'>
+               
+                <div class='empty-dashboard- invisible'>
+                Welcome to the Experience Portal.
+                <br>This is your one-stop place to interact with your workplace
+                <br>Go to the marketplace to find stuff
+                <br>Click the <span class='menu-icon'></span> to add cards to this dashboard
+                </div>
+                
+                <div class='uxp-content-left'>   
+                <div class='gridster'>   
+                    <div class='uxp-dashboard-container home-summary-grid'>
+                        <!--<div data-row='1' data-col='1' data-sizex="3" data-sizey="2" class='uxp-widget actionicon'>
+                            <div class='widget-wrap open'>
+                                <div class='logo first'><span class="svg-icon open-state"></span></div>
+                                <div class='title'>Open<span class="value"></span></div>
+                            </div>
+                        </div> -->
+                        <div data-row='1' data-col='2' data-sizex="3" data-sizey="2" class='uxp-widget actionicon'>
+                            <div class='widget-wrap inprogress'>
+                                <div class='logo second' ><span class="svg-icon inprogress-state"></span></div>
+                                <div class='title'>Pending<span class="value">
+                                   ${if auth.UserType ==  [Admin User Group] }
+                                                    #{services.countcomplaints.Pending}
+                                   ${else}
+
+                                    #{services.counttenantcomplaints.Pending} 
+                                    ${end}
+                                                            
+                                    </span></div>
+                            </div>
+                        </div>
+                        <div data-row='1' data-col='3' data-sizex="3" data-sizey="2" class='uxp-widget actionicon'>
+                            <div class='widget-wrap resolved'>
+                                <div class='logo fourth'><span class="svg-icon closed-state"></span></div>
+                                <div class='title'>UnResolved<span class="value">
+                                     ${if auth.UserType ==  [Admin User Group] }
+                                                    #{services.countcomplaints.UnResolved}
+                                   ${else}
+
+                                    #{services.counttenantcomplaints.UnResolved}
+                                    ${end}
+                                    </span></div>
+                            </div>
+                        </div>
+                        <div data-row='1' data-col='3' data-sizex="3" data-sizey="2" class='uxp-widget actionicon'>
+                            <div class='widget-wrap closed'>
+                                <div class='logo third'><span class="svg-icon resolved-state"></span></div>
+                                <div class='title'>Resolved<span class="value">
+                                      ${if auth.UserType ==  [Admin User Group] }
+                                            #{services.countcomplaints.Resolved}
+                                   ${else}
+                                            #{services.counttenantcomplaints.Resolved}
+                                    ${end}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="wr-status-card-wrapper">
+                    <div class='uxp-dashboard-container '>
+                        <div class='uxp-widget actionicon'>
+                            <div class='wr-status-widget-wrap'>
+                                <h2 class='wr-status-widget-title'>${if auth.UserType ==  [Admin User Group] }
+                                                    #{services.countcomplaints.Pending}
+                                   ${else}
+
+                                    #{services.counttenantcomplaints.Pending} 
+                                    ${end}Pending</h2>
+                                
+                                ${for complaint in services.getpending}
+
+                                <div class="status-card opened" key=#{complaint.CCKey}>
+                                    <h3 class="status-card-title"><span class="severity high">#{complaint.Typename}</span>#{complaint.CCID} - #{complaint.Subject}</h3>
+                                    <div class="other-stat">
+                                        <span class="wr-id other-stat-data"># #{complaint.Uniq}</span>
+                                        <span class="wr-id other-stat-data">#{complaint.LocationName}</span>
+                                       <!-- <span class="wr-id other-stat-data comment">4</span>-->
+                                    </div>
+                                    <span class="status-card-icon inprogress" title="New"><span class="st-title">#{complaint.Stage}</span></span> 
+                                </div>
+
+                                
+                                ${end}
+
+                            </div>
+                          <!--   <div class='nexticon'>
+                                <i class="fa fa-angle-right next" style="font-size:32px;color:grey"></i>
+                            </div>
+                            <div class='previousicon'>
+                                <i class="fa fa-angle-left previous" style="font-size:32px;color:grey"></i>
+                            </div> -->
+                             
+                           
+                        </div>
+
+                        <div class='uxp-widget actionicon'>
+                            <div class='wr-status-widget-wrap'>
+                                <h2 class='wr-status-widget-title'>${if auth.UserType ==  [Admin User Group] }
+                                                    #{services.countcomplaints.Resolved}
+                                   ${else}
+
+                                    #{services.counttenantcomplaints.Resolved}
+                                    ${end} Resolved</h2>
+                              
+                                ${for complaint in services.getresolved}
+                                 <div class="status-card" key=#{complaint.CCKey}>
+                                    <h3 class="status-card-title"><span class="severity low">#{complaint.Typename}</span>#{complaint.CCID} - #{complaint.Subject}</h3>
+                                    <div class="other-stat">
+                                        <span class="wr-id other-stat-data"># #{complaint.Uniq}</span>
+                                        <span class="wr-id other-stat-data">#{complaint.LocationName}</span>
+                                        <!--<span class="wr-id other-stat-data comment">4</span>-->
+                                    </div>
+                                    <span class="status-card-icon resolved" title="In Progress"><span class="st-title">#{complaint.Stage}</span></span> 
+                                </div>
+                                ${end}
+                                
+                            </div>
+                        </div>
+
+                        <div class='uxp-widget actionicon'>
+                            <div class='wr-status-widget-wrap'>
+                                <h2 class='wr-status-widget-title'>${if auth.UserType ==  [Admin User Group] }
+                                                    #{services.countcomplaints.UnResolved}
+                                   ${else}
+
+                                    #{services.counttenantcomplaints.UnResolved}
+                                    ${end} Unresolved</h2>
+                                   ${for complaint in services.getunresolved}
+                                 <div class="status-card" key=#{complaint.CCKey}>
+                                    <h3 class="status-card-title"><span class="severity medium">#{complaint.Typename}</span>#{complaint.CCID} - #{complaint.Subject}</h3>
+                                    <div class="other-stat">
+                                        <span class="wr-id other-stat-data"># #{complaint.Uniq}</span>
+                                        <span class="wr-id other-stat-data">#{complaint.LocationName}</span>
+                                        <!--<span class="wr-id other-stat-data comment">4</span>-->
+                                    </div>
+                                    <span class="status-card-icon closed" title="In Progress"><span class="st-title">#{complaint.Stage}</span></span> 
+                                </div>
+                                ${end}                              
+                            </div>
+                        </div>
+
+                        <div class='uxp-widget actionicon'>
+                            <!--<div class='wr-status-widget-wrap'>
+                                <h2 class='wr-status-widget-title'>12 Closed</h2>
+                                 <div class="status-card">
+                                    <h3 class="status-card-title"><span class="severity high">P 1</span>Lunch Room fan is not working</h3>
+                                    <div class="other-stat">
+                                        <span class="wr-id other-stat-data">#045</span>
+                                        <span class="wr-id other-stat-data">Eutech - Ground Floor - Lunch Room</span>
+                                        <span class="wr-id other-stat-data comment">9</span>
+                                        <span class="wr-id other-stat-data feed-back">Feedback</span>
+                                    </div>
+                                    <span class="status-card-icon closed" title="Closed"><span class="st-title">Closed</span></span> 
+                                </div>
+                                
+                            </div> -->
+                        </div>
+
+                    </div>
+                </div>
+
+                </div>
+
+                <div class='uxp-content-right work-request-details' id='uxp-content-right'> 
+
+                   
+                   
+                
+
+                </div>
+
+                <div class='uxp-content-resolved work-request-details '> 
+
+                   
+                    <span class="close-btn" style='background-image:url(/Resources/uxp/close.svg);background-size:contain;background-color:#fff'></span>
+                    <span class="edit-btn" style='background-color:#fff'></span>
+                    <h3 class="wr-details-heading">Service Request Details</h3>
+
+                    <span class="severity low">Priority 3</span>
+                    <span class="last-update">Last Update : 13 - 05 - 2020 5.35 PM</span>
+                    <span class=req-id># 045</span>
+
+                    <h3 class="wr-details-title">Lunch Room Fan is not working</h3>
+                        <div class='request_details' style='position:absolute;top:130px;width:100%'>
+                            <div class='request_details_head'>Description</div>
+                            <div class='request_details_value'>AHU-L2-MALL RF WEST COURT-C3-16 - 
+                                Fan stopped working due to internal defects with shot ball bearings or an overheated motor.</div>
+                            <div class='request_details_head'>Requester</div>
+                            <div class='request_details_value'>Rahman</div>
+                            <div class='request_details_head'>Problem Type</div>
+                            <div class='request_details_value'>Fan</div>
+
+                             <div class='request_details_head'>Service Category</div>
+                            <div class='request_details_value'>HVAC</div>
+
+                            <div class='request_details_head'>Problem</div>
+                            <div class='request_details_value'>Electrical</div>
+
+                             <div class='request_details_head'>Technician</div>
+                            <div class='request_details_value'>Nida</div>
+
+                            <div class='request_details_head'>Location</div>
+                            <div class='request_details_value'>DFC.Al-Badia.F01</div>
+
+                            <div class='request_details_head'>Asset</div>
+                            <div class='request_details_value'>AHU-L2-MALL RF WEST COURT-C3-16</div>
+
+                            <div class='request_details_head'>
+                                Feedback
+                            </div>
+
+                            <div class='request_details_value'>
+                                Overall Service is Good
+                            </div>
+                            <div class='request_details_head'>
+                                Rating
+                            </div>
+
+                            <div class='request_details_value'>
+                                <style>
+                                    span.fa-star{
+                                    color: grey;
+                                    }
+                                    span.fa-star.checked{
+                                        color: orange
+                                    }
+
+                                </style>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                            </div>
+                            
+                    
+                    </div>
+               
+                
+
+                </div>
+
+               <div class='uxp-content-message work-request-details'>
+                 <span class="close-btn" style='background-image:url(/Resources/uxp/close.svg);background-size:contain;background-color:#fff'></span>
+                     <h3 class="wr-details-heading">Messages</h3>
+                       <div class="container clearfix">
+    
+    <div class="chat">
+     <!-- <div class="chat-header clearfix">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01_green.jpg" alt="avatar" />
+        
+        <div class="chat-about">
+          <div class="chat-with">Dexter</div>
+
+        </div>
+        
+      </div>--> <!-- end chat-header -->
+      
+      <div class="chat-history">
+        <ul>
+            
+               <li>
+                <div class="message-data">
+                  <span class="message-data-name" style='font-size:12px'><i class="fa fa-circle online"></i>Madiha</span>
+                  <span class="message-data-time" style='font-size:8px'>10:12 AM, Today</span>
+                </div>
+                <div class="message my-message">
+                    AC is not properly working since morning and is with poor cooling
+                </div>
+              </li>
+                <li class="clearfix">
+                <div class="message-data align-right">
+                  <span class="message-data-time" style='font-size:8px'>10:12 AM, Today</span> &nbsp; &nbsp;
+                  <span class="message-data-name" style='font-size:12px' >DFC FM</span> <i class="fa fa-circle me"></i>
+                  
+                </div>
+                <div class="message other-message float-right">
+                Sorry for the inconvenince . Your issue is registered
+
+                </div>
+              </li>
+
+               <li>
+                <div class="message-data">
+                  <span class="message-data-name" style='font-size:12px'><i class="fa fa-circle online"></i> Madiha</span>
+                  <span class="message-data-time" style='font-size:8px'>10:15 AM, Today</span>
+                </div>
+                <div class="message my-message">
+                    Please attend the issue now
+                </div>
+              </li>
+              </li>
+                <li class="clearfix">
+                <div class="message-data align-right">
+                  <span class="message-data-time" style='font-size:8px'>10:17 AM, Today</span> &nbsp; &nbsp;
+                  <span class="message-data-name" style='font-size:12px' >DFC FM</span> <i class="fa fa-circle me"></i>
+                  
+                </div>
+                <div class="message other-message float-right">
+                    Supervisor will come and examine the issue 
+                </div>
+              </li>
+          
+          </ul>
+        
+      </div> <!-- end chat-history -->
+      
+      <div class="chat-message clearfix">
+       <textarea name="message-to-send" id="message-to-send" placeholder ="Type your message" cols="4" rows="1" style='border:1px solid #e0e0e0; width: 70%'></textarea>
+                
+        
+        <button type='submit' style='width: 25% ;padding: 10px;background-color:#236af7;border-radius:25px;color:#fff;position:relative;top:30px'>Send</button>
+       
+       
+
+      </div> <!-- end chat-message -->
+      
+    </div> <!-- end chat -->
+    
+  </div> <!--messgae-panel-->
+            
+                 
+            </div>
+            <div class='blurry invisible'></div>
+              <div class='uxp-menu-options invisible'>
+                        <div class='closer' onclick='hideMenu();return false;'></div>
+                        <div class='title'>Menu</div>
+                        <div class='items'>
+                            <a href='#' onclick='hideMenu();browseCards();return false;'>Browse Cards</a>
+                            <a href='#{appurl}/UseCaseManager/usecases'>Switch to Configuration Dashboard</a>
+                            <a href='#{appurl}/User/userdashboard'>Switch to General Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            <div class='card-browser invisible has-closer'>
+                <div class='closer' onclick='closeMe(this);return false;'></div>
+                <div class='title'>Add cards to your home page</div>
+                <div class='actions'>
+                    <div class='adder hidden' onclick='addSelectedCards();return false;'></div>
+                </div>
+                <div class='loader'>Loading...</div>
+                <div class='card-list'></div>
+            </div>
+            <div class='new-cards-info has-closer invisible'>
+                <div class='closer' onclick='closeMe(this);return false;'></div>
+                <div class='text'>New cards are available</div>
+                <div class='view' onclick='browseCards();closeMe(this);return false;'>View</div>
+            </div>
+            ]]>
+        </Field>
+    </Section>
+</UI>
