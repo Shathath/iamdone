@@ -1,0 +1,28 @@
+@import "./base.scss";
+
+.btn-login {
+  background-color: $action-btn-color;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+  text-transform: uppercase;
+}
+.btn-login:hover {
+  background-color: $action-btn-color;
+  box-shadow: 2px 4px 10px grey;
+}
+
+.adduplinks {
+  margin-top: 40px;
+  span.fpassword {
+    font-size: 1rem;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+  span.slinks {
+    float: right;
+    text-decoration-line: underline;
+    color: $action-btn-color;
+  }
+}

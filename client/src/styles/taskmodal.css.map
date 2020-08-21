@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":["taskmodal.scss"],"names":[],"mappings":"AAAA;EACE","file":"taskmodal.css"}
+{"version":3,"sourceRoot":"","sources":["base.scss","taskmodal.scss"],"names":[],"mappings":"AAEA;EACE;;;AAGF;EACE;EACA;EACA;;;ACRF;EACE","file":"taskmodal.css"}

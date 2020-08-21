@@ -1,0 +1,39 @@
+label {
+  font-weight: bold;
+}
+
+label.imp::after {
+  content: "*";
+  color: red;
+  margin-left: 2px;
+}
+
+.btn-login {
+  background-color: #3c63e3;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+  text-transform: uppercase;
+}
+
+.btn-login:hover {
+  background-color: #3c63e3;
+  box-shadow: 2px 4px 10px grey;
+}
+
+.adduplinks {
+  margin-top: 40px;
+}
+.adduplinks span.fpassword {
+  font-size: 1rem;
+}
+.adduplinks:hover {
+  cursor: pointer;
+}
+.adduplinks span.slinks {
+  float: right;
+  text-decoration-line: underline;
+  color: #3c63e3;
+}
+
+/*# sourceMappingURL=signup.css.map */

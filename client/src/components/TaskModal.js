@@ -1,6 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 import "../styles/taskmodal.css";
+import Select from "react-select";
 function TaskModal({ show, closeModal }) {
   return (
     <Modal
@@ -15,10 +16,11 @@ function TaskModal({ show, closeModal }) {
           border: "1px solid #fff",
           backgroundColor: "transparent",
           overflow: "auto",
+          fontFamily: "Raleway,open-sans",
           WebkitOverflowScrolling: "touch",
           borderRadius: "4px",
           outline: "none",
-          width: "100%",
+          width: "80%",
           margin: "0 auto",
           padding: "20px",
         },
@@ -36,30 +38,54 @@ function TaskModal({ show, closeModal }) {
             <form>
               <div className="form-row">
                 <div className="form-group col-md-6">
-                  <label>Task name</label>
+                  <label className="imp">Task name</label>
                   <input
                     className="form-control"
                     type="text"
-                    placeholder="Enter Email Address"
+                    placeholder="TaskName"
                     id="amount"
                   />
                 </div>
 
                 <div className="form-group col-md-6">
-                  <label>Assignee</label>
-                  <input
+                  <label className="imp">Assigned To</label>
+                  {/* <input
                     className="form-control"
                     type="password"
-                    placeholder="Enter Password"
+                    placeholder=""
                     id="spent"
+                  /> */}
+                  <Select
+                    defaultValue={["Rahman", "shathath"]}
+                    isMulti
+                    name="colors"
+                    className="basic-multi-select"
+                    classNamePrefix="select"
                   />
                 </div>
-
+                {/* 
                 <div className="form-group col-md-6">
                   <label>Due Date</label>
                   <input type="date" className="form-control" />
+                </div> */}
+                <div className="form-group col-md-6">
+                  <label className="imp">Projects</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    placeholder=""
+                    id="spent"
+                  />
                 </div>
-
+                <div className="form-group col-md-6">
+                  <label className="imp">Tags</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    placeholder=""
+                    id="spent"
+                  />
+                </div>
                 <div className="form-group col-md-6">
                   <label>Description</label>
                   <textarea
