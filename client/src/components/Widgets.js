@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/widget.css";
-import TaskModal from "./TaskModal";
+import TaskModal from "./Modals/TaskModal";
 function Widgets() {
   const [openModal, setOpenModal] = useState(false);
 

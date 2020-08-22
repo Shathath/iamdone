@@ -1,0 +1,17 @@
+@import "./base.scss";
+
+.inner-button {
+  background-color: $main-action;
+  margin-top: 30px;
+  padding: 10px 40px;
+  border: none;
+  color: #fff;
+  outline: none;
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    box-shadow: 2px 4px 10px grey;
+    border: none;
+  }
+}

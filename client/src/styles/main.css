@@ -1,6 +1,10 @@
 @font-face {
-  font-family: "open_sansregular";
+  font-family: "Raleway";
   src: url("../fonts/Raleway-VariableFont_wght.ttf") format("woff");
   font-weight: normal;
   font-style: normal;
+}
+
+html {
+  background-color: #f2f2f2;
 }

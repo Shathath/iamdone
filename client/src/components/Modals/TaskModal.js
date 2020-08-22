@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
-import "../styles/taskmodal.css";
+import "../../styles/taskmodal.css";
 import Select from "react-select";
 function TaskModal({ show, closeModal }) {
   return (

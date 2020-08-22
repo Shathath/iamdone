@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { NavLink } from "react-router-dom";
 import "../styles/navbar.css";
-import SignUpModal from "./SIgnUpModal";
+import SignUpModal from "./Modals/SignUpModal";
 
 function NavBar({ user, isAuthenticated = false }) {
   const [openSignin, setOpenSignin] = useState(false);
@@ -28,20 +29,20 @@ function NavBar({ user, isAuthenticated = false }) {
       </button>
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">
-              My Board<span class="sr-only"></span>
-            </a>
+          <li class="nav-item">
+            <NavLink exact to="/" className="custom-nav-link">
+              Board
+            </NavLink>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <NavLink className="custom-nav-link" to="/projects">
               My Projects
-            </a>
+            </NavLink>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
-              Actvity
-            </a>
+            <NavLink className="custom-nav-link" to="/activity">
+              Activity
+            </NavLink>
           </li>
         </ul>
 
@@ -67,8 +68,8 @@ function NavBar({ user, isAuthenticated = false }) {
               </button>
             </>
           ) : (
-            <li class="nav-item active">
-              <a class="nav-link" href="#">
+            <li class="nav-item">
+              <a class="nav-link user-name" href="#">
                 {user}
                 <span class="sr-only"></span>
               </a>

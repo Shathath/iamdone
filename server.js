@@ -5,9 +5,11 @@ require("./config/configDB");
 const jwt = require("jsonwebtoken");
 const userRouter = require("./server_routes/userroutes");
 const todoRouter = require("./server_routes/todoroutes");
+const projectRouter = require("./server_routes/projectRoute");
 const meetingRouter = require("./server_routes/meetingRoutes");
 const SocketIO = require("socket.io");
 const http = require("http");
+const { prependListener } = require("process");
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
@@ -17,6 +19,7 @@ app.use(cors());
 app.use(cookieParser());
 
 app.use(userRouter);
+app.use(projectRouter);
 
 const port = process.env.PORT || 5000;
 //const http = require('http');

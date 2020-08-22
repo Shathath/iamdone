@@ -2,8 +2,8 @@ import React, { useState, useMemo, useCallback } from "react";
 import Modal from "react-modal";
 
 import { connect } from "react-redux";
-import * as actions from "../store/actions/index";
-import "../styles/signup.css";
+import * as actions from "../../store/actions/index";
+import "../../styles/signup.css";
 
 function SignUpModal({
   show = false,
