@@ -33,6 +33,24 @@ function TaskModal({ show, closeModal }) {
             <h5 className="modal-title" id="exampleModalLabel">
               Add New Task
             </h5>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="icon icon-tabler icon-tabler-square-x icons"
+              width="36"
+              height="36"
+              viewBox="0 0 24 24"
+              stroke-width="1"
+              stroke="#000000"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style={{ float: "right" }}
+              onClick={() => closeModal()}
+            >
+              <path stroke="none" d="M0 0h24v24H0z" />
+              <rect x="4" y="4" width="16" height="16" rx="2" />
+              <path d="M10 10l4 4m0 -4l-4 4" />
+            </svg>
           </div>
           <div className="modal-body">
             <form>
@@ -63,11 +81,7 @@ function TaskModal({ show, closeModal }) {
                     classNamePrefix="select"
                   />
                 </div>
-                {/* 
-                <div className="form-group col-md-6">
-                  <label>Due Date</label>
-                  <input type="date" className="form-control" />
-                </div> */}
+
                 <div className="form-group col-md-6">
                   <label className="imp">Projects</label>
                   <input

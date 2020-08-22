@@ -5,7 +5,13 @@ import { connect } from "react-redux";
 import * as actions from "../store/actions/index";
 import "../styles/signup.css";
 
-function SignUpModal({ show }, props) {
+function SignUpModal({
+  show = false,
+  closeModal,
+  authOperation,
+  isloading,
+  isAuthenticated = false,
+}) {
   const [isSignup, showisSignup] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +30,7 @@ function SignUpModal({ show }, props) {
 
   const handlePasswordValue = useCallback(
     (e) => {
-      console.log(password, confirmpassword);
+      console.log(password);
       if (e.target.name === "password") setPassword(e.target.value);
       if (e.target.name === "confirmpassword")
         setconfirmpassword(e.target.value);
@@ -35,17 +41,19 @@ function SignUpModal({ show }, props) {
   const handleauthenticate = (e) => {
     e.preventDefault();
 
-    if (!email || !password || !confirmpassword) {
+    if (!email || !password) {
       return setError("Enter Email or Password");
     }
-    if (password !== confirmpassword) {
+    if (isSignup && password !== confirmpassword) {
       return setError("Password are not same");
     }
-    props.authOperation(email, password, isSignup);
+
+    authOperation(email, password, isSignup);
   };
+
   return (
     <Modal
-      isOpen={show}
+      isOpen={show && isAuthenticated ? false : true}
       style={{
         content: {
           position: "absolute",
@@ -55,13 +63,11 @@ function SignUpModal({ show }, props) {
           bottom: "40px",
           border: "1px solid #f2f2f2",
           boxShadow: "2px 2px 10px #f2f2f2",
-          WebkitOverflowScrolling: "touch",
           borderRadius: "4px",
           outline: "none",
           width: "30%",
           height: isSignup || error ? "550px" : "400px",
           fontFamily: "Raleway , sans-serif",
-
           margin: "0 auto",
           padding: "20px",
         },
@@ -73,7 +79,7 @@ function SignUpModal({ show }, props) {
             <h3 style={{ textAlign: "center", display: "inline" }}>LOGIN</h3>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="icon icon-tabler icon-tabler-square-x"
+              className="icon icon-tabler icon-tabler-square-x icons"
               width="36"
               height="36"
               viewBox="0 0 24 24"
@@ -83,6 +89,7 @@ function SignUpModal({ show }, props) {
               stroke-linecap="round"
               stroke-linejoin="round"
               style={{ float: "right" }}
+              onClick={() => closeModal()}
             >
               <path stroke="none" d="M0 0h24v24H0z" />
               <rect x="4" y="4" width="16" height="16" rx="2" />
@@ -107,7 +114,7 @@ function SignUpModal({ show }, props) {
             </label>
             <input
               className="form-control"
-              type="text"
+              type="password"
               placeholder="Password"
               onChange={handlePasswordValue}
               name="password"
@@ -120,7 +127,8 @@ function SignUpModal({ show }, props) {
               </label>
               <input
                 className="form-control"
-                type="text"
+                type="
+                password"
                 placeholder="Password"
                 name="confirmpassword"
                 onChange={handlePasswordValue}
@@ -133,6 +141,13 @@ function SignUpModal({ show }, props) {
               type=""
               onClick={handleauthenticate}
             >
+              {isloading && (
+                <span
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              )}
               Sign Up
             </button>
           ) : (
@@ -141,6 +156,13 @@ function SignUpModal({ show }, props) {
               type=""
               onClick={handleauthenticate}
             >
+              {isloading && (
+                <span
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              )}
               Login
             </button>
           )}
@@ -167,5 +189,11 @@ const mapDispatchToprops = (dispatch) => {
       dispatch(actions.authUser(email, password, isSignup)),
   };
 };
+const mapStateToProps = (state) => {
+  return {
+    isloading: state.auth.loading,
+    isAuthenticated: state.auth.token !== null,
+  };
+};
 
-export default connect(null, mapDispatchToprops)(SignUpModal);
+export default connect(mapStateToProps, mapDispatchToprops)(SignUpModal);

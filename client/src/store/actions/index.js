@@ -1,2 +1,2 @@
 export { addTask, errorTask } from "./taskAction";
-export { authUser } from "./authAction";
+export { authUser, authCheckhandler } from "./authAction";

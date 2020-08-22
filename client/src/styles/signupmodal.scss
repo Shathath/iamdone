@@ -1,17 +1,5 @@
 @import "./base.scss";
 
-.btn-login {
-  background-color: $action-btn-color;
-  margin: 0 auto;
-  text-align: center;
-  width: 100%;
-  text-transform: uppercase;
-}
-.btn-login:hover {
-  background-color: $action-btn-color;
-  box-shadow: 2px 4px 10px grey;
-}
-
 .adduplinks {
   margin-top: 40px;
   span.fpassword {
@@ -25,4 +13,23 @@
     text-decoration-line: underline;
     color: $action-btn-color;
   }
+}
+.btn-login {
+  background-color: $action-btn-color;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+  text-transform: uppercase;
+}
+.btn-login:hover {
+  background-color: $action-btn-color;
+  box-shadow: 2px 4px 10px grey;
+}
+
+.error-msg {
+  padding: 10px;
+  background-color: #ea366c;
+  color: #fff;
+  text-align: center;
+  border-radius: 10px;
 }

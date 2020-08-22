@@ -1,10 +1,12 @@
 import * as actionTypes from "./types";
-import Axios from "axios";
+import axios from "axios";
 
-export const addNewUser = (user) => {
+export const addNewUser = (tokenid, user, userid) => {
   return {
     type: actionTypes.NEW_USER,
-    user: user,
+    token: tokenid,
+    user,
+    userid,
   };
 };
 
@@ -14,15 +16,82 @@ export const setError = (error) => {
     error: error,
   };
 };
+export const authStart = () => {
+  return {
+    type: actionTypes.AUTH_START,
+    loading: true,
+  };
+};
+export const authLogout = () => {
+  localStorage.removeItem("token");
+  return {
+    type: actionTypes.LOGOUT,
+    token: null,
+  };
+};
 
-export const authUser = (user) => {
+export const authUser = (email, password, isSignup) => {
   const data = {
-    email: user.email,
-    password: user.password,
+    email,
+    password,
   };
   return (dispatch) => {
-    Axios.post("https://localhost:5000/signup", data)
-      .then((response) => dispatch(addNewUser(response.data)))
+    dispatch(authStart());
+    if (!!isSignup) {
+      return axios
+        .post("http://localhost:5000/users/signup", data)
+        .then((response) => {
+          dispatch(
+            addNewUser(
+              response.data.tokenid,
+              response.data.email,
+              response.data.id
+            )
+          );
+        })
+        .catch((error) => dispatch(setError(error.message)));
+    } else {
+      return axios
+        .post("http://localhost:5000/users/login", data)
+        .then((response) => {
+          console.log(response.data);
+          dispatch(
+            addNewUser(
+              response.data.tokenid,
+              response.data.email,
+              response.data.id
+            )
+          );
+        })
+        .catch((error) => dispatch(setError(error.message)));
+    }
+  };
+};
+
+export const authCheckhandler = () => {
+  console.log("calling");
+  const token = localStorage.getItem("token");
+  console.log(token);
+  const getUserToken = function () {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    if (token) {
+      //  config['x-auth-token'] = token
+      config.headers["Authorization"] = "Bearer " + token;
+    }
+    return config;
+  };
+  return (dispatch) => {
+    axios
+      .get("http://localhost:5000/users", getUserToken())
+
+      .then((response) => {
+        console.log(response.data);
+        dispatch(addNewUser(token, response.data.email, response.data.id));
+      })
       .catch((error) => dispatch(setError(error.message)));
   };
 };

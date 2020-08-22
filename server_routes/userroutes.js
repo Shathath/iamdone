@@ -9,21 +9,11 @@ const jwt = require("jsonwebtoken");
 
 route.get("/users", auth, async (req, res) => {
   user = req.user;
-
-  const _unreadcount = await Collaborator.countDocuments({
-    $and: [{ Collaborator: Objectid(req.user._id) }, { IsReaded: 1 }],
+  console.log(user);
+  res.json({
+    id: user._id,
+    email: user.email,
   });
-  try {
-    const updateunreadcount = await User.findByIdAndUpdate(
-      { _id: req.user._id },
-      { $set: { unreadcount: _unreadcount } },
-      { upsert: true, returnNewDocument: true }
-    );
-
-    res.send({ user: updateunreadcount });
-  } catch (error) {
-    console.log(error);
-  }
 });
 route.get("/all/users", async (req, res) => {
   await User.find()
@@ -36,15 +26,13 @@ route.post("/users/login", async (req, res) => {
   try {
     const user = await User.findUserCredentials(req.body);
 
-    const token = jwt.sign({ id: user._id }, "welcome");
+    const token = jwt.sign({ id: user._id }, "generate");
     if (!token) throw Error("Couldnt sign the token");
+    console.log("token", token);
     res.status(200).json({
-      token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-      },
+      tokenid: token,
+      id: user._id,
+      email: user.email,
     });
   } catch (error) {
     res.status(400).json(error.message);
@@ -62,10 +50,11 @@ const upload = multer({
     cb(undefined, true);
   },
 });
-route.post("/signup", async (req, res) => {
+route.post("/users/signup", async (req, res) => {
+  //console.log(req);
   try {
     const { email, password } = req.body;
-
+    console.log(email);
     if (!email || !password) {
       throw new Error("Enter all Fields");
     }
@@ -77,10 +66,9 @@ route.post("/signup", async (req, res) => {
     user.save();
     res.status(200).json({
       token,
-      user: {
-        id: user._id,
-        email: user.email,
-      },
+
+      id: user._id,
+      email: user.email,
     });
   } catch (error) {
     res.status(400).json(error.message);

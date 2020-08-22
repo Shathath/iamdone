@@ -16,6 +16,8 @@ app.use(express.urlencoded());
 app.use(cors());
 app.use(cookieParser());
 
+app.use(userRouter);
+
 const port = process.env.PORT || 5000;
 //const http = require('http');
 const server = http.createServer(app);

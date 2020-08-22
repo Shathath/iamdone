@@ -1,17 +1,19 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import "../styles/navbar.css";
 import SignUpModal from "./SIgnUpModal";
 
-function NavBar() {
+function NavBar({ user, isAuthenticated = false }) {
   const [openSignin, setOpenSignin] = useState(false);
 
   const handleSignUpModal = () => {
+    alert("calling");
     setOpenSignin(!openSignin);
   };
   return (
     <nav class="navbar navbar-expand-md navbar-light bg-light">
       <a class="navbar-brand" href="#">
-        Navbar w/ text
+        i'm DONE
       </a>
       <button
         class="navbar-toggler"
@@ -28,38 +30,64 @@ function NavBar() {
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="#">
-              Home <span class="sr-only">(current)</span>
+              My Board<span class="sr-only"></span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
-              Features
+              My Projects
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              Actvity
             </a>
           </li>
         </ul>
+
         <ul class="navbar-nav ml-auto">
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            data-toggle="modal"
-            data-target="#exampleModalCenter"
-            onClick={handleSignUpModal}
-          >
-            LOGIN
-          </button>
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            data-toggle="modal"
-            data-target="#exampleModalCenter"
-          >
-            SIGN UP
-          </button>
+          {!isAuthenticated ? (
+            <>
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                data-toggle="modal"
+                data-target="#exampleModalCenter"
+                onClick={handleSignUpModal}
+              >
+                LOGIN
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                data-toggle="modal"
+                data-target="#exampleModalCenter"
+              >
+                SIGN UP
+              </button>
+            </>
+          ) : (
+            <li class="nav-item active">
+              <a class="nav-link" href="#">
+                {user}
+                <span class="sr-only"></span>
+              </a>
+            </li>
+          )}
         </ul>
-        {openSignin && <SignUpModal show={openSignin} />}
+        {openSignin && (
+          <SignUpModal show={openSignin} closeModal={handleSignUpModal} />
+        )}
       </div>
     </nav>
   );
 }
 
-export default NavBar;
+const mapStateToProps = (state) => {
+  return {
+    user: state.auth.user,
+    isAuthenticated: state.auth.token !== null,
+  };
+};
+
+export default connect(mapStateToProps)(NavBar);

@@ -1,7 +1,7 @@
 import React from "react";
 
-function Mainview() {
+function MyBoard() {
   return <div></div>;
 }
 
-export default Mainview;
+export default MyBoard;

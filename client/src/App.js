@@ -1,13 +1,19 @@
 import React, { lazy, Suspense } from "react";
 import NavBar from "./components/Navbar";
-import Mainview from "./components/Mainview";
+import MyBoard from "./components/MyBoard";
 import Widgets from "./components/Widgets";
 //import LoginModal from './components/LoginModal'
-
+import * as actions from "../src/store/actions/index";
+import { connect } from "react-redux";
 import "./App.css";
 
 class App extends React.Component {
-  componentDidMount() {}
+  constructor(props) {
+    super(props);
+  }
+  componentDidMount() {
+    this.props.autoLogin();
+  }
   render() {
     //  const {history} = this.props;
     // console.log(history)
@@ -17,7 +23,7 @@ class App extends React.Component {
       <div className="App">
         <NavBar />
         <Widgets />
-        <Mainview />
+        <MyBoard />
       </div>
     );
   }
@@ -30,5 +36,9 @@ class App extends React.Component {
 //     task: state.task.task
 //   }
 // }
-
-export default App;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    autoLogin: () => dispatch(actions.authCheckhandler()),
+  };
+};
+export default connect(null, mapDispatchToProps)(App);
