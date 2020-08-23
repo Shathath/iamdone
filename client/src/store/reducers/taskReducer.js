@@ -22,11 +22,13 @@ const setError = (state = {}, action) => {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ADD_TASK:
-      addTask(state, action);
+      return addTask(state, action);
+      break;
     case actionTypes.ERROR_TASK:
-      setError(state, action);
+      return setError(state, action);
     default:
       return state;
+      break;
   }
 };
 

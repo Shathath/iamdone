@@ -1,7 +1,6 @@
-import React, { lazy, Suspense } from "react";
+import React from "react";
 import NavBar from "./components/Navbar";
 import MyBoard from "./components/MyBoard";
-import Widgets from "./components/Widgets";
 
 import * as actions from "../src/store/actions/index";
 import { connect } from "react-redux";

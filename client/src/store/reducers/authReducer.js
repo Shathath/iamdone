@@ -40,12 +40,16 @@ export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.NEW_USER:
       return addNewUser(state, action);
+      break;
     case actionTypes.AUTH_START:
       return authStart(state, action);
+      break;
     case actionTypes.LOGOUT:
       return authLogout(state, action);
+      break;
     default:
       return state;
+      break;
   }
 };
 

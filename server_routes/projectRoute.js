@@ -27,4 +27,12 @@ route.post("/createproject", async (req, res) => {
     });
 });
 
+route.get("/getprojects", async (req, res) => {
+  const projects = await Project.find({});
+  console.log(projects);
+  res.json({
+    projects: projects,
+  });
+});
+
 module.exports = route;
