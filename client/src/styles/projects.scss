@@ -15,3 +15,35 @@
     border: none;
   }
 }
+
+.project-card {
+  height: 200px;
+  background-color: #fff;
+  border-radius: 4px;
+  margin: 10px;
+  .project-card-title {
+    font-weight: 600;
+    text-align: left;
+    position: relative;
+    top: 50px;
+  }
+  .project-card-header {
+    padding: 2px;
+    position: relative;
+    top: 30px;
+    background-color: deeppink;
+    color: #fff;
+    border-radius: 5px;
+    width: 25%;
+    font-size: 0.9em;
+  }
+  .project-delete {
+    position: relative;
+    top: 50px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .project-delete::after {
+    content: "Delete";
+  }
+}

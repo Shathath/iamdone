@@ -1,8 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import "../../styles/taskmodal.css";
 import Select from "react-select";
+import axios from "axios";
 function TaskModal({ show, closeModal }) {
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:5000/getprojects").then((response) => {
+      const options = [];
+      const { projects } = response.data;
+
+      projects.forEach((value, index) => {
+        const setOptions = {
+          value: value._id,
+          label: value.title,
+        };
+
+        options.push(setOptions);
+        setProjects(options);
+      });
+    });
+  }, []);
+
   return (
     <Modal
       isOpen={show}
@@ -84,11 +104,11 @@ function TaskModal({ show, closeModal }) {
 
                 <div className="form-group col-md-6">
                   <label className="imp">Projects</label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    placeholder=""
-                    id="spent"
+                  <Select
+                    options={projects.length > 0 ? projects : []}
+                    name="colors"
+                    className="basic-multi-select"
+                    classNamePrefix="select"
                   />
                 </div>
                 <div className="form-group col-md-6">
