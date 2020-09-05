@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import "../styles/navbar.css";
+import "../styles/main.css";
 import SignUpModal from "./Modals/SignUpModal";
 
 function NavBar({ user, isAuthenticated = false }) {
@@ -44,6 +45,7 @@ function NavBar({ user, isAuthenticated = false }) {
               Activity
             </NavLink>
           </li>
+          
         </ul>
 
         <ul class="navbar-nav ml-auto">
@@ -68,12 +70,29 @@ function NavBar({ user, isAuthenticated = false }) {
               </button>
             </>
           ) : (
+              <React.Fragment>
+            <li className="nav-item">
+                <div className="dropdown show">
+                    <a className="btn btn-secondary dropdown-toggle" style={{"backgroundColor":"#4c7fed",border:"none",outline:"none"}} href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Settings
+                    </a>
+
+                    <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a className="dropdown-item" href="#">Create New User</a>
+                        <a className="dropdown-item" href="#">Change Auth Roles</a>
+                        <a className="dropdown-item" href="#">Logout</a>
+                    </div>
+                </div>
+            
+            </li>
             <li class="nav-item">
               <a class="nav-link user-name" href="#">
                 {user}
                 <span class="sr-only"></span>
               </a>
             </li>
+           
+          </React.Fragment>
           )}
         </ul>
         {openSignin && (

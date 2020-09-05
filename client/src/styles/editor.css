@@ -1,0 +1,11 @@
+    .DraftEditor-editorContainer{
+          height: 270px;
+        padding-bottom: 10px;
+        overflow-y: scroll;
+    }
+
+    .draftJsToolbar__buttonWrapper__1Dmqh{
+         display: inline;
+         position: relative;
+         top: 10px
+    }

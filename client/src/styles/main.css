@@ -8,3 +8,18 @@
 html {
   background-color: #f2f2f2;
 }
+
+.btn:focus,.btn-secondary:focus {
+     outline:none !important;
+     box-shadow: none !important;
+}
+
+.btn-secondary:focus{
+    outline:none !important;
+    box-shadow: none;
+
+}
+
+.show>.btn-secondary.dropdown-toggle:focus {
+    box-shadow: none !important;
+}
