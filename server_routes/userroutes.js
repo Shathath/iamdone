@@ -6,6 +6,20 @@ const User = require("../models/userschema");
 const multer = require("multer");
 const auth = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
+const sharp=require("sharp");
+
+const upload = multer({
+    limits: {
+      fileSize: 1000000,
+    },
+    fileFilter(req, file, cb) {
+        console.log("File",file)
+      if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+        return cb(new Error("Please Upload a Image"));
+      }
+      cb(undefined, true);
+    },
+  });
 
 route.get("/users", auth,async (req, res) => {
   user = req.user;
@@ -24,15 +38,24 @@ route.get("/allUsers",async(req,res)=>{
 })
 
 
-route.post("/createuser",async(req,res)=>{
-    
-    console.log('createuser')
-    const user = new User(req.body)
+route.post("/createuser",upload.single('avatar'),async(req,res)=>{
+    console.log(req.file.buffer)
+    const buffer = await sharp(req.file.buffer).resize({width:225,height:225}).jpeg().toBuffer()
+    const {email,name,password,gender,dob} =req.body
+    var avatar = buffer;
+    const user = new User({
+         email,
+         name,
+         password,
+         avatar,
+         dob,
+         gender
+    })
     user.save();
     res.status(200).json({
         id: user._id
     })
-    console.log(user._id)
+    //console.log(user._id)
 
 })
 
@@ -53,17 +76,7 @@ route.post("/users/login", async (req, res) => {
   }
 });
 
-const upload = multer({
-  limits: {
-    fileSize: 1000000,
-  },
-  fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-      return cb(new Error("Please Upload a Image"));
-    }
-    cb(undefined, true);
-  },
-});
+
 
 route.post("/users/signup", async (req, res) => {
   //console.log(req);

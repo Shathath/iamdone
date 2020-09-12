@@ -35,6 +35,7 @@ function CreateUser(props){
     const [dob,setDob] = useState('')
     const [password,setpassword] = useState('')
     const [isImageLoaded,setImageLoaded] = useState(false)
+    const [imageFile,setImageFile] = useState(null)
    // const [error,setError] = useState('')
 
     const sumbitData = (e) => {
@@ -50,21 +51,20 @@ function CreateUser(props){
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         };
-        console.log(name,email,dob)
-        var data = {
-          name: name,
-          email:email,
-          password: password,
-          position:position,
-          gender: gender
-        };
-        console.log('calling submit data')
+        const data = new FormData();
+        data.append('name',name)
+        data.append('email',email)
+        data.append('password',password)
+        data.append('position',position)
+        data.append('gender',gender)
+        data.append('avatar',imageFile)    
+        
         axios
           .post("http://localhost:5000/createuser", data)
           .then((response) => {
             console.log(response.data);
             console.log(props.history)
-            props.history.replace('/users')
+            //props.history.replace('/users')
            
           })
           .catch((error) => {
@@ -108,19 +108,23 @@ function CreateUser(props){
     }
     const previewImage = (e)=>{
         setImageLoaded(true)
+        
+        setImageFile(e.target.files[0])
         const imagPreview = new FileReader()
         //document.getElementById('profilepic').files[0]
         imagPreview.readAsDataURL(document.getElementById("uploadbutton").files[0]);
 
         imagPreview.onload = function (event) {
             document.getElementById("uploadpreview").src = event.target.result;
+            
+            
         };
     }
 
    
     return(
         <div className='container' style={{backgroundColor:"#fff",marginTop:"50px",padding:"30px"}}>
-        <form>
+        <form enctype="multipart/form-data">
             <div className='form-group row'>
                
                 <div className="col-sm-2">

@@ -9,12 +9,14 @@ const projectRouter = require("./server_routes/projectRoute");
 const meetingRouter = require("./server_routes/meetingRoutes");
 const SocketIO = require("socket.io");
 const http = require("http");
-const { prependListener } = require("process");
+//const { prependListener } = require("process");
+
+
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(express.urlencoded());
+
 app.use(cors());
 app.use(cookieParser());
 
