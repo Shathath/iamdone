@@ -7,6 +7,9 @@ import { connect } from "react-redux";
 import "./App.css";
 import { Switch, Route } from "react-router-dom";
 import Projects from "../src/components/Projects";
+import CreateUser from "./components/CreateUser";
+import HooksDem from "./components/HooksDem";
+import Users from "./components/Users";
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -27,10 +30,18 @@ class App extends React.Component {
           <Route path="/projects">
             <Projects />
           </Route>
+          <Route path="/hooks">
+            <HooksDem />
+          </Route>
+          <Route path="/users">
+            <Users />
+          </Route>
           <Route path="/activity">
             <Projects />
           </Route>
-
+          <Route path="/createuser">
+            <CreateUser />
+          </Route>
           <Route path="/" exact>
             <MyBoard />
           </Route>

@@ -78,7 +78,7 @@ function NavBar({ user, isAuthenticated = false }) {
                     </a>
 
                     <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a className="dropdown-item" href="#">Create New User</a>
+                        <NavLink className="dropdown-item" to="/createuser">Create New User</NavLink>
                         <a className="dropdown-item" href="#">Change Auth Roles</a>
                         <a className="dropdown-item" href="#">Logout</a>
                     </div>

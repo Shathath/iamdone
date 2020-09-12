@@ -7,7 +7,7 @@ const multer = require("multer");
 const auth = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
 
-route.get("/users", auth, async (req, res) => {
+route.get("/users", auth,async (req, res) => {
   user = req.user;
   console.log(user);
   res.json({
@@ -15,13 +15,27 @@ route.get("/users", auth, async (req, res) => {
     email: user.email,
   });
 });
-route.get("/all/users", async (req, res) => {
-  await User.find()
-    .select("email")
-    .then((user) => res.send(user))
-    .catch((error) => res.send(error.message));
-  //console.log(alluser)
-});
+
+route.get("/allUsers",async(req,res)=>{
+    const users = await User.find();
+    res.status(200).json({
+        users
+    })
+})
+
+
+route.post("/createuser",async(req,res)=>{
+    
+    console.log('createuser')
+    const user = new User(req.body)
+    user.save();
+    res.status(200).json({
+        id: user._id
+    })
+    console.log(user._id)
+
+})
+
 route.post("/users/login", async (req, res) => {
   try {
     const user = await User.findUserCredentials(req.body);
@@ -50,6 +64,7 @@ const upload = multer({
     cb(undefined, true);
   },
 });
+
 route.post("/users/signup", async (req, res) => {
   //console.log(req);
   try {
