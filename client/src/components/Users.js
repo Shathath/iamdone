@@ -21,22 +21,31 @@ const UserOne  = (props)=>{
             return base64    
         }
         
-        return(<div className='user-card'>
+        return(
+        <div className='user-card'>
             <div className='user-card-header'>
                    <div className='user-profile-pic'>
                        {value.avatar ?
                         <img src={arraytobase64(value.avatar.data)} /> : 
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="100" height="100" viewBox="0 0 24 24" stroke-width="1" stroke="#acb0ac" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
+                            <path stroke="none" d="M0 0h24v24H0z"/>
+                            <circle cx="12" cy="7" r="4" />
+                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                        </svg>
                        
                         }
                     </div>
             </div>
             <div className='user-name'>{value.name}</div>
-            <div className='user-position'></div>
+            <div className='user-position'>{value.position}</div>
+            <div className='user-nav-todetail'>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-narrow-right" width="28" height="28" viewBox="0 0 24 24" stroke-width="1.5" stroke="#333A60" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z"/>
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <line x1="15" y1="16" x2="19" y2="12" />
+                <line x1="15" y1="8" x2="19" y2="12" />
+            </svg>
+            </div>
         </div>
     )
         
@@ -52,12 +61,12 @@ function Users(){
         axios.get('http://localhost:5000/allUsers').then((response)=>{
             
             setUsers(response.data.users)
-            console.log(response.data)
+            
         }).catch((error)=>{
             setError(error.message)
         })
     },[])
-    console.log("Users",users)
+    
     
         return <UserOne data={users}/>;
 

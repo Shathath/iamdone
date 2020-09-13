@@ -23,5 +23,34 @@
   margin-top: 25px;
   padding: 6px;
 }
+.user-card .user-name {
+  font-weight: 700;
+  font-size: 20px;
+  margin-top: 15px;
+}
+.user-card .user-position {
+  color: #a3a29e;
+  margin-top: 10px;
+}
+.user-card .user-position::before {
+  content: "@";
+}
+.user-card .user-nav-todetail {
+  background-color: #F3D36C;
+  width: 30%;
+  padding: 5px;
+  float: right;
+  margin-top: 30px;
+  margin-right: 10px;
+  position: relative;
+  bottom: 0;
+  cursor: pointer;
+}
+.user-card .user-nav-todetail:hover {
+  background-color: #333A60;
+}
+.user-card .user-nav-todetail:hover svg {
+  stroke: #F3D36C;
+}
 
 /*# sourceMappingURL=user.css.map */

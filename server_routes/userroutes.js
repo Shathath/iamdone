@@ -41,7 +41,7 @@ route.get("/allUsers",async(req,res)=>{
 route.post("/createuser",upload.single('avatar'),async(req,res)=>{
     console.log(req.file.buffer)
     const buffer = await sharp(req.file.buffer).resize({width:225,height:225}).jpeg().toBuffer()
-    const {email,name,password,gender,dob} =req.body
+    const {email,name,password,gender,dob,position} =req.body
     var avatar = buffer;
     const user = new User({
          email,
@@ -49,7 +49,8 @@ route.post("/createuser",upload.single('avatar'),async(req,res)=>{
          password,
          avatar,
          dob,
-         gender
+         gender,
+         position
     })
     user.save();
     res.status(200).json({
