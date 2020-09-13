@@ -32,7 +32,7 @@ export default class SimpleStaticToolbarEditor extends Component {
   };
 
   render() {
-      console.log( this.state.editorState.getCurrentContent().getPlainText())
+      
     return (
       <div>
         <div style={{"boxSizing": "border-box",

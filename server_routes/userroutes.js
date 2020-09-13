@@ -23,7 +23,7 @@ const upload = multer({
 
 route.get("/users", auth,async (req, res) => {
   user = req.user;
-  console.log(user);
+  
   res.json({
     id: user._id,
     email: user.email,
@@ -39,7 +39,7 @@ route.get("/allUsers",async(req,res)=>{
 
 
 route.post("/createuser",upload.single('avatar'),async(req,res)=>{
-    console.log(req.file.buffer)
+    
     const buffer = await sharp(req.file.buffer).resize({width:225,height:225}).jpeg().toBuffer()
     const {email,name,password,gender,dob,position} =req.body
     var avatar = buffer;

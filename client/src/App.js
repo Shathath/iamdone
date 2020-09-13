@@ -10,6 +10,7 @@ import Projects from "../src/components/Projects";
 import CreateUser from "./components/CreateUser";
 import HooksDem from "./components/HooksDem";
 import Users from "./components/Users";
+import Users1 from "./components/Users1";
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -34,7 +35,7 @@ class App extends React.Component {
             <HooksDem />
           </Route>
           <Route path="/users">
-            <Users />
+            <Users1 />
           </Route>
           <Route path="/activity">
             <Projects />

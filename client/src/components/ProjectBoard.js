@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/projects.css";
 function ProjectBoard() {
   const [projects, setProjects] = useState([]);
   const [options, setOptions] = useState(false);
-  const [opened, setOpened] = useState(false);
+  
   const [selected, setSelected] = useState(false);
   const [loader, setLoader] = useState(false)
 

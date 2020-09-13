@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import "../../styles/taskmodal.css";
 import Select from "react-select";
 import axios from "axios";
+import {connect} from 'react-redux';
 
 import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
 import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
@@ -13,10 +14,15 @@ import SimpleStaticToolbarEditor from "../RichText/Editor";
 
 
 
-function TaskModal({ show, closeModal }) {
+function TaskModal({ show, closeModal,userid }) {
+    console.log("user",userid)
   const [editorState,setEditorState] = useState(createEditorStateWithText(''))
   const [projects, setProjects] = useState([]);
   const [users,setUsers] = useState([])
+  const [title,setTitle] = useState('')
+  const [tags,setTags] = useState('');
+  const [userselected,setSelectedUsers] = useState([])
+  const [projectselected,setSelectedProjects] = useState([])
   
   
 
@@ -52,12 +58,30 @@ function TaskModal({ show, closeModal }) {
     });
   }, []);
 
-  useEffect(()=>{
-    console.log("In use effect",editorState.getCurrentContent().getPlainText())
-  },[editorState])
+  const submitData = (e)=>{
+      e.preventDefault();
+        console.log("Title",title)
+        console.log("tags",tags);
+        console.log("userSlected",userselected);
+        console.log("projectSelected",projectselected)
+        
+        const data = {
+              title,
+              tags,
+              userselected,
+              projectselected,
+              editorState,
+              projects,
+              assignee: userid
+        }
+        axios.post('http://localhost:5000/addtask',data).then((response)=>{
+             console.log(response.data)
+        })
+
+  }
 
   const handleRichContent = (value) => {
-      console.log("Im Calling")
+      
         setEditorState(value)
   }
   return (
@@ -82,7 +106,9 @@ function TaskModal({ show, closeModal }) {
           margin: "0 auto",
           padding: "20px",
         },
-        overlay: {},
+        overlay: {
+            overflow:"scroll"
+        },
       }}
     >
 
@@ -111,9 +137,6 @@ function TaskModal({ show, closeModal }) {
             <path d="M10 10l4 4m0 -4l-4 4" />
           </svg>
         </div>
-
-
-
         <div className="form-row">
           <div className="form-group col-md-6">
             <label className="imp">Task name</label>
@@ -121,7 +144,8 @@ function TaskModal({ show, closeModal }) {
               className="form-control"
               type="text"
               placeholder="TaskName"
-              id="amount"
+              name="title"
+              onChange = { (e)=> setTitle(e.target.value)}
             />
           </div>
 
@@ -139,6 +163,7 @@ function TaskModal({ show, closeModal }) {
               name="colors"
               className="basic-multi-select"
               classNamePrefix="select"
+              onChange = {(option)=> setSelectedUsers(option)}
             />
           </div>
 
@@ -149,6 +174,7 @@ function TaskModal({ show, closeModal }) {
               name="colors"
               className="basic-multi-select"
               classNamePrefix="select"
+              onChange = {(option)=> setSelectedProjects(option)}
             />
           </div>
           <div className="form-group col-md-6">
@@ -158,6 +184,7 @@ function TaskModal({ show, closeModal }) {
               type="text"
               placeholder=""
               id="spent"
+              onChange = {(e)=>setTags(e.target.value)}
             />
           </div>
           <div className="form-group col-md-12">
@@ -169,12 +196,17 @@ function TaskModal({ show, closeModal }) {
 
 
 
-      <button type="button" className="btn btn-primary">
+      <button type="button" className="btn btn-primary" onClick={submitData}>
         Create
     </button>
 
     </Modal >
   );
 }
-
-export default TaskModal;
+const mapStateToProps = state =>{
+    console.log(state)
+     return {
+          userid : state.auth.userid
+     }
+}
+export default connect(mapStateToProps)(TaskModal);

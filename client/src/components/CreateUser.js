@@ -76,23 +76,23 @@ function CreateUser(props){
          if(e.target.name == 'name'){
              setName(e.target.value)
          }
-         else if(e.target.name == 'email'){
+         else if(e.target.name === 'email'){
              
              setEmail(e.target.value)
          }
-         else if(e.target.name=='position'){
+         else if(e.target.name==='position'){
              
              setPosition(e.target.value)
          }
-         else if(e.target.name == 'gender'){
+         else if(e.target.name === 'gender'){
             
              setGender(e.target.value)
          }
-         else if(e.target.name == 'phone'){
+         else if(e.target.name === 'phone'){
              
              setPhone(e.target.value)
          }
-         else if(e.target.name == 'password'){
+         else if(e.target.name === 'password'){
              
               setpassword(e.target.value)
          }

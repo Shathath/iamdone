@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const {default: Users}=require("../client/src/components/Users");
+
 const Schema = mongoose.Schema;
 
 const todoSchema = new Schema({
@@ -20,13 +20,14 @@ const todoSchema = new Schema({
 
   assignee: {
     type:mongoose.Schema.Types.ObjectId,
-    ref: Users,
+    ref: User,
     required: true
   },
-  usersdoing : {
-      type: Array,
+  usersdoing : [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref:'User',
       required: true 
-  }
+  }]
   ,tags: {
     type: String,
   },
