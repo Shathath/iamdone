@@ -64,7 +64,7 @@ function CreateUser(props){
           .then((response) => {
             console.log(response.data);
             console.log(props.history)
-            //props.history.replace('/users')
+            props.history.replace('/users')
            
           })
           .catch((error) => {

@@ -1,13 +1,14 @@
 const mongoose = require("mongoose");
+const {default: Users}=require("../client/src/components/Users");
 const Schema = mongoose.Schema;
 
 const todoSchema = new Schema({
-  task_description: {
+  taskdescription: {
     type: String,
     required: true,
   },
 
-  title: {
+  taskname: {
     type: String,
     required: true,
   },
@@ -16,31 +17,17 @@ const todoSchema = new Schema({
     type: String,
     required: true,
   },
-  //   users: [
-  //     {
-  //       type: mongoose.Schema.Types.ObjectId,
-  //       required: true,
-  //       ref: "Users",
-  //     },
-  //   ],
+
   assignee: {
-    type: String,
+    type:mongoose.Schema.Types.ObjectId,
+    ref: Users,
+    required: true
   },
-  //   userid: {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "Users",
-  //     required: true,
-  //   },
-
-  //   image: [
-  //     {
-  //       file: { type: Buffer },
-  //       fileName: { type: String },
-  //       filetype: { type: String },
-  //     },
-  //   ],
-
-  label: {
+  usersdoing : {
+      type: Array,
+      required: true 
+  }
+  ,tags: {
     type: String,
   },
 

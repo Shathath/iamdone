@@ -16,6 +16,7 @@ import SimpleStaticToolbarEditor from "../RichText/Editor";
 function TaskModal({ show, closeModal }) {
   const [editorState,setEditorState] = useState(createEditorStateWithText(''))
   const [projects, setProjects] = useState([]);
+  const [users,setUsers] = useState([])
   
   
 
@@ -35,6 +36,19 @@ function TaskModal({ show, closeModal }) {
         options.push(setOptions);
         setProjects(options);
       });
+      axios.get('http://localhost:5000/allUsers').then((response)=>{
+          const options = [];
+          const {users} = response.data;
+
+          users.forEach((value,index)=>{
+            const setOptions = {
+                value: value._id,
+                label: value.name
+            }
+             options.push(setOptions)
+             setUsers(options)
+          })
+      })
     });
   }, []);
 
@@ -120,8 +134,8 @@ function TaskModal({ show, closeModal }) {
                     id="spent"
                   /> */}
             <Select
-              defaultValue={["Rahman", "shathath"]}
-              isMulti
+              options = {users.length >0  ? users : []}
+              isMulti = {true}
               name="colors"
               className="basic-multi-select"
               classNamePrefix="select"

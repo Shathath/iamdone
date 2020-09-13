@@ -16,14 +16,14 @@ export const errorTask = (error) => {
 };
 
 export const addNewTask = (task) => {
-  // return (dispatch) => {
-  //   axios
-  //     .post("https://localhost:5000/addtask", data)
-  //     .then((response) => {
-  //       dispatch(addTask(response.data));
-  //     })
-  //     .catch((error) => {
-  //       dispatch(setError(error.message));
-  //     });
-  // };
+  return (dispatch) => {
+    axios
+      .post("https://localhost:5000/addtask", data)
+      .then((response) => {
+        dispatch(addTask(response.data));
+      })
+      .catch((error) => {
+        dispatch(setError(error.message));
+      });
+  };
 };
