@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 
 import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
 import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
-
+import { convertToRaw,convertFromRaw} from 'draft-js'
 
 import SimpleStaticToolbarEditor from "../RichText/Editor";
 
@@ -64,13 +64,14 @@ function TaskModal({ show, closeModal,userid }) {
         console.log("tags",tags);
         console.log("userSlected",userselected);
         console.log("projectSelected",projectselected)
-        
+        const raw = convertToRaw(editorState.getCurrentContent())
+        console.log("Raw data");
         const data = {
               title,
               tags,
               userselected,
               projectselected,
-              editorState,
+              raw,
               projects,
               assignee: userid
         }

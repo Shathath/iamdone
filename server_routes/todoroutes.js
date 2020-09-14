@@ -5,24 +5,26 @@ const Todo = require("../models/todoschema");
 route.post("/addtask", async (req, res) => {
     const users = []
     console.log("Hello I'm In add task")
-    const {title,tags,editorState,assignee,userselected,projectselected} = req.body
-    console.log("User Selected",userselected,projectselected)
+    const {title,tags,raw,assignee,userselected,projectselected} = req.body
+    console.log("User Selected",)
     console.log("++++++++++++++++++++++++++")
     console.log("=============================")
     userselected.map((user)=>{
         // console.log("user",user.label)
         users.push(user.value)
     })
+    
     const newTodo = new Todo({
-         taskdescription: editorState,
+         taskdescription: raw,
          taskname:title,
          tags:tags,
-         projects: projectselected.value,
+         project    : projectselected.value,
          assignee: assignee,
          usersdoing: [...users],
          isCompleted: false
 
     });
+    console.log(newTodo)
     newTodo
     .save()
     .then((data) => res.send(data))

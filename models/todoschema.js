@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const todoSchema = new Schema({
   taskdescription: {
-    type: String,
+    type: Object,
     required: true,
   },
 
