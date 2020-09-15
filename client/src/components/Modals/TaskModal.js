@@ -4,7 +4,7 @@ import "../../styles/taskmodal.css";
 import Select from "react-select";
 import axios from "axios";
 import {connect} from 'react-redux';
-
+import * as actions from "../../store/actions/index";
 import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
 import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
 import { convertToRaw,convertFromRaw} from 'draft-js'
@@ -14,7 +14,8 @@ import SimpleStaticToolbarEditor from "../RichText/Editor";
 
 
 
-function TaskModal({ show, closeModal,userid }) {
+
+function TaskModal({ show, closeModal,userid,fnaddnewtask,error}) {
     console.log("user",userid)
   const [editorState,setEditorState] = useState(createEditorStateWithText(''))
   const [projects, setProjects] = useState([]);
@@ -23,6 +24,7 @@ function TaskModal({ show, closeModal,userid }) {
   const [tags,setTags] = useState('');
   const [userselected,setSelectedUsers] = useState([])
   const [projectselected,setSelectedProjects] = useState([])
+  const [terror,setError] = useState(error)
   
   
 
@@ -60,12 +62,8 @@ function TaskModal({ show, closeModal,userid }) {
 
   const submitData = (e)=>{
       e.preventDefault();
-        console.log("Title",title)
-        console.log("tags",tags);
-        console.log("userSlected",userselected);
-        console.log("projectSelected",projectselected)
         const raw = convertToRaw(editorState.getCurrentContent())
-        console.log("Raw data");
+        
         const data = {
               title,
               tags,
@@ -77,8 +75,15 @@ function TaskModal({ show, closeModal,userid }) {
         }
         axios.post('http://localhost:5000/addtask',data).then((response)=>{
              console.log(response.data)
+             const x = fnaddnewtask(response.data)
+             console.log(x)
+             if(!error){
+                closeModal()
+                //setError(error)
+             }
+        }).catch((error)=>{
+            setError(error.message)
         })
-
   }
 
   const handleRichContent = (value) => {
@@ -204,10 +209,16 @@ function TaskModal({ show, closeModal,userid }) {
     </Modal >
   );
 }
+const mapDispacthToProps = dispatch => {
+    return {
+        fnaddnewtask : (value) => dispatch(actions.addTask(value))
+    }
+}
 const mapStateToProps = state =>{
     console.log(state)
      return {
-          userid : state.auth.userid
+          userid : state.auth.userid,
+          error : state.task.error
      }
 }
-export default connect(mapStateToProps)(TaskModal);
+export default connect(mapStateToProps,mapDispacthToProps)(TaskModal);
