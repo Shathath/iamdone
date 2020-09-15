@@ -1,4 +1,5 @@
 
+
 import * as actionTypes from "../actions/types";
 
 const initialState = {
@@ -14,6 +15,14 @@ const addTask = (state = {}, action) => {
     loading: false
   };
 };
+const loadAllTask = (state,action)=>{
+    console.log(action.task)
+    return {
+         ...state,
+         tasks: action.task,
+         loading: false
+    }
+}
 
 const setError = (state = {}, action) => {
   return {
@@ -33,7 +42,9 @@ const reducer = (state = initialState, action) => {
         return setLoading(state,action)
     case actionTypes.ADD_TASK:
       return addTask(state, action);
-case actionTypes.ERROR_TASK:
+    case actionTypes.LOADALLTASK:
+        return loadAllTask(state,action)
+    case actionTypes.ERROR_TASK:
       return setError(state, action);
     default:
       return state;

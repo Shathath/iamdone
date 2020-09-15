@@ -67,7 +67,21 @@ export const authUser = (email, password, isSignup) => {
     }
   };
 };
+export const loadAllTask = (params)=>{
+    
+    return (dispatch)=>{
 
+    
+    axios.get("https://localhost:5000/alltasks").then((response)=>{
+        
+        console.log(response.data)
+        
+        
+    }).catch((error)=>{
+        
+    })
+}
+}
 export const authCheckhandler = () => {
   console.log("calling");
   const token = localStorage.getItem("token");
@@ -95,3 +109,5 @@ export const authCheckhandler = () => {
       .catch((error) => dispatch(setError(error.message)));
   };
 };
+
+

@@ -74,12 +74,11 @@ function TaskModal({ show, closeModal,userid,fnaddnewtask,error}) {
               assignee: userid
         }
         axios.post('http://localhost:5000/addtask',data).then((response)=>{
-             console.log(response.data)
-             const x = fnaddnewtask(response.data)
-             console.log(x)
+             fnaddnewtask(response.data)
+             
              if(!error){
                 closeModal()
-                //setError(error)
+                
              }
         }).catch((error)=>{
             setError(error.message)

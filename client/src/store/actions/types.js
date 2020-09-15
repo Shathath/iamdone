@@ -6,4 +6,5 @@ export const AUTH_START = "AUTH_START";
 export const AUTH_ERROR = "AUTH_ERROR";
 export const LOGOUT = "LOGOUT";
 export const SET_LOADING = "SETLOADING";
+export const LOADALLTASK = "LOADALLTASK";
 

@@ -31,4 +31,11 @@ route.post("/addtask", async (req, res) => {
     .catch((error) => res.send(error.message));
 });
 
+route.get('/alltasks',async(req,res)=>{
+    const tasks = await Todo.find();
+    res.status(200).json({
+         tasks
+    })
+})
+
 module.exports = route;
