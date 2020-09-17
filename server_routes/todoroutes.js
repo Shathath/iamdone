@@ -1,5 +1,6 @@
 const express = require("express");
 const route = express.Router();
+const User = require('../models/userschema')
 const Todo = require("../models/todoschema");
 
 route.post("/addtask", async (req, res) => {
@@ -21,7 +22,8 @@ route.post("/addtask", async (req, res) => {
          project    : projectselected.value,
          assignee: assignee,
          usersdoing: [...users],
-         isCompleted: false
+         isCompleted: false,
+         status: 'Open'
 
     });
     console.log(newTodo)
@@ -32,10 +34,9 @@ route.post("/addtask", async (req, res) => {
 });
 
 route.get('/alltasks',async(req,res)=>{
-    const tasks = await Todo.find();
-    res.status(200).json({
-         tasks
-    })
+    const tasks = await Todo.find().populate('assignee usersdoing','name avatar').exec()
+    //console.log(tasks)
+    res.status(200).send(tasks)
 })
 
 module.exports = route;

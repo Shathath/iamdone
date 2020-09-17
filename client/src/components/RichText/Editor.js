@@ -139,7 +139,7 @@ export default class CustomToolbarEditor extends Component {
     this.setState({
       editorState,
     },()=>{
-        
+
     });
   };
 
@@ -161,7 +161,6 @@ export default class CustomToolbarEditor extends Component {
                   <UnderlineButton {...externalProps} />
                   <CodeButton {...externalProps} />
                   <Separator {...externalProps} />
-                  
                   <UnorderedListButton {...externalProps} />
                   <OrderedListButton {...externalProps} />
                   <BlockquoteButton {...externalProps} />

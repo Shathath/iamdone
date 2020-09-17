@@ -48,9 +48,10 @@ export const loadAllTask = ()=>{
 
     dispatch(setLoading(true))
     axios.get("http://localhost:5000/alltasks").then((response)=>{
-        dispatch(setLoading(false))
+        
         console.log(response.data)
         dispatch(setAllTask(response.data))
+        dispatch(setLoading(false))
         
     }).catch((error)=>{
         dispatch(errorTask(error.message))

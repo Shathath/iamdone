@@ -20,9 +20,10 @@ app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 
+app.use(todoRouter)
 app.use(userRouter);
 app.use(projectRouter);
-app.use(todoRouter)
+
 
 const port = process.env.PORT || 5000;
 //const http = require('http');

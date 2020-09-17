@@ -25,11 +25,15 @@ const todoSchema = new Schema({
   },
   usersdoing : [{
       type: mongoose.Schema.Types.ObjectId,
-      ref:'User',
+      ref:User,
       required: true 
   }]
   ,tags: {
     type: String,
+  },
+  status : {
+       type: String,
+       required:true
   },
 
   isCompleted: {

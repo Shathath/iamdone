@@ -54,7 +54,7 @@ export const authUser = (email, password, isSignup) => {
       return axios
         .post("http://localhost:5000/users/login", data)
         .then((response) => {
-          console.log(response.data);
+          //console.log(response.data);
           dispatch(
             addNewUser(
               response.data.tokenid,

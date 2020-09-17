@@ -9,6 +9,8 @@ const initialState = {
 };
 
 const addTask = (state = {}, action) => {
+    console.log(action)
+    console.log(...state.tasks)
   return {
     ...state,
     tasks: [...state.tasks,action.task],
@@ -20,7 +22,7 @@ const loadAllTask = (state,action)=>{
     return {
          ...state,
          tasks: action.task,
-         loading: false
+         
     }
 }
 
@@ -31,9 +33,10 @@ const setError = (state = {}, action) => {
   };
 };
 const setLoading = (state = {},action) =>{
+    console.log("Set Loading reducer",action)
     return {
         ...state,
-        loading:action.loading
+        loading:action.isloading
     }
 }
 const reducer = (state = initialState, action) => {
@@ -41,7 +44,9 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_LOADING:
         return setLoading(state,action)
     case actionTypes.ADD_TASK:
-      return addTask(state, action);
+       const m = addTask(state, action);
+       console.log("In Reducer",m)
+       return m
     case actionTypes.LOADALLTASK:
         return loadAllTask(state,action)
     case actionTypes.ERROR_TASK:

@@ -1,0 +1,44 @@
+.taskcard {
+  background-color: #fff;
+  cursor: pointer;
+  width: 90%;
+  height: 200px;
+  border-radius: 0px;
+  margin-bottom: 20px;
+}
+.taskcard .taskstatus.Open {
+  background-color: #25b05c;
+  color: #fff;
+  padding: 5px;
+  margin-left: 10px;
+  width: 100px;
+  text-align: center;
+  position: relative;
+  top: 10px;
+  font-size: 12px;
+}
+.taskcard .taskstatus.In-Progress {
+  background-color: dodgerblue;
+  color: #fff;
+  padding: 5px 10px;
+  margin-left: 10px;
+  width: 100px;
+  text-align: center;
+  position: relative;
+  top: 10px;
+  font-size: 12px;
+}
+.taskcard .taskheader {
+  padding: 15px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: left;
+}
+.taskcard .taskusers {
+  position: relative;
+  top: 70px;
+  float: right;
+  margin-right: 10px;
+}
+
+/*# sourceMappingURL=task.css.map */

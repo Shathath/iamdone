@@ -16,7 +16,7 @@ import SimpleStaticToolbarEditor from "../RichText/Editor";
 
 
 function TaskModal({ show, closeModal,userid,fnaddnewtask,error}) {
-    console.log("user",userid)
+    //console.log("user",userid)
   const [editorState,setEditorState] = useState(createEditorStateWithText(''))
   const [projects, setProjects] = useState([]);
   const [users,setUsers] = useState([])
@@ -73,14 +73,19 @@ function TaskModal({ show, closeModal,userid,fnaddnewtask,error}) {
               projects,
               assignee: userid
         }
+        alert(userid)
         axios.post('http://localhost:5000/addtask',data).then((response)=>{
-             fnaddnewtask(response.data)
-             
+            console.log("after submitting",response.data)
+             const x =fnaddnewtask(response.data)
+             console.log("error",x)
+             alert('closing modal after successful creation')
              if(!error){
+                 alert('closing modal after successful creation')
                 closeModal()
                 
              }
         }).catch((error)=>{
+            console.log(error.message)
             setError(error.message)
         })
   }
